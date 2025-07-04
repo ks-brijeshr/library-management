@@ -1,0 +1,33 @@
+dateModified: 1751633623
+email:
+  fromEmail: brijesh.rupavatiya@kalkani.in
+  fromName: 'library management'
+  transportType: craft\mail\transportadapters\Sendmail
+meta:
+  __names__:
+    1eec138d-60e0-4c9d-8ef5-9092ec4aa2b2: Common # Common
+    99cd5713-4741-4ebf-95b4-e87134494047: 'Public Schema' # Public Schema
+    99744cc3-f1a9-49b8-9df3-6ea3c67433bd: 'library management' # library management
+    ffa01f4f-4dbe-4ade-87d0-b01e71819851: 'library management' # library management
+plugins:
+  feed-me:
+    edition: standard
+    enabled: true
+    schemaVersion: 5.1.1
+  seomatic:
+    edition: standard
+    enabled: true
+    schemaVersion: 3.0.13
+system:
+  edition: pro
+  live: true
+  name: 'library management'
+  retryDuration: null
+  schemaVersion: 4.15.0.0
+  timeZone: Asia/Kolkata
+users:
+  allowPublicRegistration: false
+  defaultGroup: null
+  photoSubpath: null
+  photoVolumeUid: null
+  requireEmailVerification: true

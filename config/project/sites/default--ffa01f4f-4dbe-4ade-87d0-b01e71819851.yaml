@@ -1,0 +1,8 @@
+baseUrl: $PRIMARY_SITE_URL
+handle: default
+hasUrls: true
+language: en
+name: 'library management'
+primary: true
+siteGroup: 99744cc3-f1a9-49b8-9df3-6ea3c67433bd # library management
+sortOrder: 1
