@@ -1,0 +1,31 @@
+<h2>📤 Return Book</h2>
+
+{% set borrowEntries = craft.entries.section('borrowRecords').all() %}
+
+{% if borrowEntries %}
+  <table border="1">
+    <tr>
+      <th>Customer</th><th>Book</th><th>Borrow Date</th><th>Return</th>
+    </tr>
+    {% for entry in borrowEntries %}
+      {% if not entry.returnDate %}
+      <tr>
+        <td>{{ entry.borrower.one().title }}</td>
+        <td>{{ entry.borrowedBook.one().title }}</td>
+        <td>{{ entry.borrowDate|date('Y-m-d') }}</td>
+        <td>
+          <form method="POST">
+            {{ csrfInput() }}
+            <input type="hidden" name="action" value="entries/save-entry">
+            <input type="hidden" name="elementId" value="{{ entry.id }}">
+            <input type="hidden" name="fields[returnDate]" value="{{ now|date('Y-m-d H:i:s') }}">
+            <button type="submit">Mark Returned</button>
+          </form>
+        </td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+  </table>
+{% else %}
+  <p>No borrowed books.</p>
+{% endif %}

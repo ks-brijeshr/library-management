@@ -1,0 +1,24 @@
+defaultPlacement: end
+enableVersioning: true
+handle: borrowRecords
+name: 'Borrow Records'
+previewTargets:
+  -
+    __assoc__:
+      -
+        - label
+        - 'Primary entry page'
+      -
+        - urlFormat
+        - '{url}'
+      -
+        - refresh
+        - '1'
+propagationMethod: all
+siteSettings:
+  ffa01f4f-4dbe-4ade-87d0-b01e71819851: # library management
+    enabledByDefault: true
+    hasUrls: true
+    template: borrow-records/_entry.twig
+    uriFormat: 'borrow-records/{slug}'
+type: channel

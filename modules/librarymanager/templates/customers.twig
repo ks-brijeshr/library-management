@@ -1,0 +1,47 @@
+<h2>👥 Manage Customers</h2>
+
+<h3>Add New Customer</h3>
+<form method="POST" accept-charset="UTF-8">
+  {{ csrfInput() }}
+  <input type="hidden" name="action" value="entries/save-entry">
+  <input type="hidden" name="section" value="customer">
+
+  <label>Name:</label>
+  <input type="text" name="fields[name]" required><br>
+
+  <label>Email:</label>
+  <input type="email" name="fields[email]" required><br>
+
+  <label>Phone:</label>
+  <input type="text" name="fields[phone]" required><br>
+
+  <button type="submit">Add Customer</button>
+</form>
+
+<hr>
+
+<h3>📋 All Customers</h3>
+
+{% set customers = craft.entries.section('customers').all() %}
+
+<table border="1">
+  <tr>
+    <th>Name</th><th>Email</th><th>Phone</th><th>Actions</th>
+  </tr>
+  {% for customer in customers %}
+  <tr>
+    <td>{{ customer.title }}</td>
+    <td>{{ customer.email }}</td>
+    <td>{{ customer.phone }}</td>
+    <td>
+      <a href="{{ url('librarymanager/customers?edit=' ~ customer.id) }}">Edit</a>
+      <form method="POST" style="display:inline;">
+        {{ csrfInput() }}
+        <input type="hidden" name="action" value="entries/delete">
+        <input type="hidden" name="elementId" value="{{ customer.id }}">
+        <button type="submit" onclick="return confirm('Delete?')">Delete</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>

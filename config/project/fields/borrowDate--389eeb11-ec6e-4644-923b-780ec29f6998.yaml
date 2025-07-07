@@ -1,0 +1,17 @@
+columnSuffix: zthfgnpj
+contentColumnType: datetime
+fieldGroup: 60f023b6-3903-4c8f-b22c-863ed90a9e60 # Borrow Records
+handle: borrowDate
+instructions: 'Date the book was borrowed '
+name: 'Borrow Date'
+searchable: false
+settings:
+  max: null
+  min: null
+  minuteIncrement: 30
+  showDate: true
+  showTime: true
+  showTimeZone: false
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Date

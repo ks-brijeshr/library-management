@@ -1,0 +1,19 @@
+columnSuffix: skzrdkro
+contentColumnType: text
+fieldGroup: 502667a6-5027-4a71-bc38-cf1fb7da7b80 # Customers
+handle: phone
+instructions: 'Enter 10-digit mobile number'
+name: Phone
+searchable: false
+settings:
+  byteLimit: null
+  charLimit: null
+  code: false
+  columnType: null
+  initialRows: 4
+  multiline: false
+  placeholder: null
+  uiMode: normal
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\PlainText

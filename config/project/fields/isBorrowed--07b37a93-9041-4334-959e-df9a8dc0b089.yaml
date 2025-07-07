@@ -1,0 +1,14 @@
+columnSuffix: gxbwgfng
+contentColumnType: boolean
+fieldGroup: 52a4e04d-d348-4db0-adbd-2115775ca5f2 # Library Fields
+handle: isBorrowed
+instructions: null
+name: 'Is Borrowed'
+searchable: false
+settings:
+  default: false
+  offLabel: null
+  onLabel: null
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Lightswitch

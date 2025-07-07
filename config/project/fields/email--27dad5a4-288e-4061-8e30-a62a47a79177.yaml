@@ -1,0 +1,12 @@
+columnSuffix: unefabvb
+contentColumnType: string
+fieldGroup: 502667a6-5027-4a71-bc38-cf1fb7da7b80 # Customers
+handle: email
+instructions: 'Enter valid customer email'
+name: Email
+searchable: false
+settings:
+  placeholder: null
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Email

@@ -1,22 +1,96 @@
-dateModified: 1751633623
+dateModified: 1751887758
+elementSources:
+  craft\elements\Entry:
+    -
+      key: '*'
+      type: native
+    -
+      key: singles
+      type: native
+    -
+      heading: Channels
+      type: heading
+    -
+      defaultSort:
+        - postDate
+        - desc
+      disabled: false
+      key: 'section:11ce773e-6e38-4fa3-98eb-4407a698a570' # Books
+      tableAttributes:
+        - postDate
+        - expiryDate
+        - author
+        - link
+      type: native
+    -
+      defaultSort:
+        - postDate
+        - desc
+      disabled: false
+      key: 'section:5b5a7a58-6be2-491e-a53a-c20a2f84ece2' # Borrow Records
+      tableAttributes:
+        - postDate
+        - expiryDate
+        - author
+        - link
+      type: native
+    -
+      defaultSort:
+        - postDate
+        - desc
+      disabled: false
+      key: 'section:2d09b22c-37c4-4354-aa01-6678db3c776c' # Customers
+      tableAttributes:
+        - postDate
+        - 'field:27dad5a4-288e-4061-8e30-a62a47a79177' # Email
+        - expiryDate
+        - author
+        - link
+      type: native
 email:
   fromEmail: brijesh.rupavatiya@kalkani.in
   fromName: 'library management'
   transportType: craft\mail\transportadapters\Sendmail
 meta:
   __names__:
+    0fa3978b-3d45-4707-b9de-269d8999b998: Book # Book
     1eec138d-60e0-4c9d-8ef5-9092ec4aa2b2: Common # Common
+    2d09b22c-37c4-4354-aa01-6678db3c776c: Customers # Customers
+    3d6ea474-d6dc-4989-9a71-2b4b61da90c9: Home # Home
+    4ee01565-5a5d-4acf-ad25-6cb655d35776: 'Book Author' # Book Author
+    5b5a7a58-6be2-491e-a53a-c20a2f84ece2: 'Borrow Records' # Borrow Records
+    07b37a93-9041-4334-959e-df9a8dc0b089: 'Is Borrowed' # Is Borrowed
+    9aca720b-6f2f-4188-96ee-07be24491b41: Default # Default
+    11ce773e-6e38-4fa3-98eb-4407a698a570: Books # Books
+    013dda90-a7f9-4fd2-9e45-2a2efdb2124a: Customer # Customer
+    27dad5a4-288e-4061-8e30-a62a47a79177: Email # Email
+    48b96934-23d1-4edc-b876-d9cbe4e00f1d: ISBN # ISBN
+    52a4e04d-d348-4db0-adbd-2115775ca5f2: 'Library Fields' # Library Fields
+    60f023b6-3903-4c8f-b22c-863ed90a9e60: 'Borrow Records' # Borrow Records
     99cd5713-4741-4ebf-95b4-e87134494047: 'Public Schema' # Public Schema
+    389eeb11-ec6e-4644-923b-780ec29f6998: 'Borrow Date' # Borrow Date
+    469bdb61-1e06-4c40-925e-f1d6926e9190: 'Borrow Record' # Borrow Record
+    970b304e-5588-46c2-a08f-5a623a96d211: Home # Home
     99744cc3-f1a9-49b8-9df3-6ea3c67433bd: 'library management' # library management
+    502667a6-5027-4a71-bc38-cf1fb7da7b80: Customers # Customers
+    a67ef876-0f99-4abf-b176-a331c7ae7bd4: 'Return Date' # Return Date
+    b80f0546-bdb8-4761-aae2-d653475a01cc: Phone # Phone
+    b905d2a1-d1d4-4b7b-9513-79dcdf79d4df: 'Book Title' # Book Title
+    e788e446-49ee-432f-8cd1-9b43ac8ddadc: Default # Default
     ffa01f4f-4dbe-4ade-87d0-b01e71819851: 'library management' # library management
 plugins:
   feed-me:
     edition: standard
     enabled: true
     schemaVersion: 5.1.1
+  redactor:
+    edition: standard
+    enabled: true
+    schemaVersion: 2.3.0
   seomatic:
     edition: standard
     enabled: true
+    licenseKey: TFWJRENBZYWXGK0PQI89XMH0
     schemaVersion: 3.0.13
 system:
   edition: pro

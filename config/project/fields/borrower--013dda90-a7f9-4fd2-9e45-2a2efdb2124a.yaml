@@ -1,0 +1,24 @@
+columnSuffix: null
+contentColumnType: string
+fieldGroup: 60f023b6-3903-4c8f-b22c-863ed90a9e60 # Borrow Records
+handle: borrower
+instructions: 'Select the customer who borrowed the book'
+name: Customer
+searchable: false
+settings:
+  allowSelfRelations: false
+  branchLimit: null
+  localizeRelations: false
+  maintainHierarchy: false
+  maxRelations: 1
+  minRelations: null
+  selectionLabel: null
+  showSiteMenu: false
+  sources:
+    - 'section:2d09b22c-37c4-4354-aa01-6678db3c776c' # Customers
+  targetSiteId: null
+  validateRelatedElements: false
+  viewMode: null
+translationKeyFormat: null
+translationMethod: site
+type: craft\fields\Entries

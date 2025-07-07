@@ -1,0 +1,71 @@
+fieldLayouts:
+  b62b0235-9df8-4478-8434-1c78d6e1e3bd:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            disabled: false
+            elementCondition: null
+            id: null
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            readonly: false
+            requirable: false
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: 96085cc4-26c8-40ed-a6bb-34efe113990b
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            elementCondition: null
+            fieldUid: 27dad5a4-288e-4061-8e30-a62a47a79177 # Email
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 5da5bd30-43a7-45b3-89e2-32d032f903e5
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            elementCondition: null
+            fieldUid: b80f0546-bdb8-4761-aae2-d653475a01cc # Phone
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 02b671ba-b067-4efe-a1e8-4b83c1e13098
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: c5f87991-cdee-4f6a-9c65-a8cd65eded1a
+        userCondition: null
+handle: default
+hasTitleField: true
+name: Default
+section: 2d09b22c-37c4-4354-aa01-6678db3c776c # Customers
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+sortOrder: 1
+titleFormat: null
+titleTranslationKeyFormat: null
+titleTranslationMethod: site

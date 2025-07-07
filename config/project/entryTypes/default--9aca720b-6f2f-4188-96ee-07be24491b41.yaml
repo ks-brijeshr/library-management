@@ -1,0 +1,95 @@
+fieldLayouts:
+  b60116ef-4220-4d14-8684-5892c0ad8ba0:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            disabled: false
+            elementCondition: null
+            id: null
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            readonly: false
+            requirable: false
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: f11c6b9f-7a6b-42df-ae97-8bee8e1bc483
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            elementCondition: null
+            fieldUid: b905d2a1-d1d4-4b7b-9513-79dcdf79d4df # Book Title
+            instructions: null
+            label: null
+            required: true
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 3b4ac2b8-d3c7-4d72-8fa4-5586b542bf4f
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            elementCondition: null
+            fieldUid: 4ee01565-5a5d-4acf-ad25-6cb655d35776 # Book Author
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 30eb346c-9591-43b9-9e06-3085bf732f3e
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            elementCondition: null
+            fieldUid: 48b96934-23d1-4edc-b876-d9cbe4e00f1d # ISBN
+            instructions: null
+            label: null
+            required: true
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 41df1dcd-668a-4237-bb5b-1a749bdf6734
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            elementCondition: null
+            fieldUid: 07b37a93-9041-4334-959e-df9a8dc0b089 # Is Borrowed
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 54119606-6128-4685-8063-f62cc2f5b599
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: c36fbd19-93b2-4b51-85c9-aa8ed447a264
+        userCondition: null
+handle: default
+hasTitleField: true
+name: Default
+section: 11ce773e-6e38-4fa3-98eb-4407a698a570 # Books
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+sortOrder: 1
+titleFormat: null
+titleTranslationKeyFormat: null
+titleTranslationMethod: site

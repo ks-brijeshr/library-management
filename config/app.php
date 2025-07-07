@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Yii Application Config
  *
@@ -24,4 +25,8 @@ use craft\helpers\App;
 
 return [
     'id' => App::env('CRAFT_APP_ID') ?: 'CraftCMS',
+    'modules' => [
+        'librarymanager' => \modules\librarymanager\Module::class,
+    ],
+    'bootstrap' => ['librarymanager'],
 ];
