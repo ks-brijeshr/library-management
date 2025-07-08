@@ -8,6 +8,7 @@ use yii\base\Event;
 use craft\elements\Entry;
 use craft\web\UrlManager;
 use craft\events\ModelEvent;
+use craft\events\ElementEvent;
 use craft\web\twig\variables\Cp;
 use yii\base\Module as BaseModule;
 use craft\events\RegisterUrlRulesEvent;
@@ -17,12 +18,12 @@ class Module extends BaseModule
 {
     public function init()
     {
-        // ✅ Define @modules path alias (very important)
+        // Define @modules path alias (very important)
         Craft::setAlias('@modules', dirname(__DIR__));
 
         parent::init();
 
-        // ✅ Register CP Template Root
+        // Register CP Template Root
         Event::on(
             View::class,
             View::EVENT_REGISTER_CP_TEMPLATE_ROOTS,
@@ -31,7 +32,7 @@ class Module extends BaseModule
             }
         );
 
-        // ✅ Register CP URL rules
+        // Register CP URL rules
         Event::on(
             UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
@@ -44,7 +45,7 @@ class Module extends BaseModule
             }
         );
 
-        // ✅ Add sidebar nav item
+        // Add sidebar nav item
         Event::on(
             Cp::class,
             Cp::EVENT_REGISTER_CP_NAV_ITEMS,
@@ -57,7 +58,7 @@ class Module extends BaseModule
             }
         );
 
-        // ✅ Validate ISBN Uniqueness for Book Entries
+        // Validate ISBN Uniqueness for Book Entries
         Event::on(
             Entry::class,
             Entry::EVENT_BEFORE_SAVE,
@@ -122,5 +123,18 @@ class Module extends BaseModule
                 }
             }
         );
+
+
+        Event::on(Entry::class, Entry::EVENT_AFTER_SAVE, function (ModelEvent $event) {
+            $entry = $event->sender;
+
+            if ($entry->section->handle === 'borrowRecords') {
+                $book = $entry->getFieldValue('borrowedBook')->one();
+                if ($book && !$book->getFieldValue('isBorrowed')) {
+                    $book->setFieldValue('isBorrowed', true);
+                    Craft::$app->elements->saveElement($book);
+                }
+            }
+        });
     }
 }
