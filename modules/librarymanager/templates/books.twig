@@ -9,11 +9,42 @@
 
 	<h3>Add New Book</h3>
 
-	{% if craft.app.request.getParam('success') %}
-		<p style="color:green;">✅ Book added successfully!</p>
-	{% endif %}
-
-	<form method="POST" accept-charset="UTF-8" enctype="multipart/form-data">
+	<style>
+		form.book-form {
+			max-width: 500px;
+			background: #f8f9fa;
+			padding: 20px;
+			border-radius: 8px;
+			border: 1px solid #dee2e6;
+			margin-bottom: 30px;
+		}
+		.form-group {
+			margin-bottom: 15px;
+		}
+		.form-group label {
+			display: block;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+		.form-group input[type="text"],
+		.form-group input[type="checkbox"] {
+			width: 100%;
+			padding: 8px;
+			box-sizing: border-box;
+		}
+		.btn {
+			background: #007bff;
+			color: white;
+			border: none;
+			padding: 10px 15px;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		.btn:hover {
+			background: #0056b3;
+		}
+	</style>
+	<form class="book-form" method="POST" accept-charset="UTF-8" enctype="multipart/form-data">
 		{{ csrfInput() }}
 		<input type="hidden" name="action" value="entries/save-entry">
 		<input type="hidden" name="sectionId" value="{{ section.id }}">
@@ -22,23 +53,32 @@
 		<input type="hidden" name="enabled" value="1">
 		<input type="hidden" name="redirect" value="{{ 'librarymanager/books?success=1' | hash }}">
 
+		<div class="form-group">
+			<label>Title:</label>
+			<input type="text" name="title" required>
+		</div>
 
-		<label>Title:</label>
-		<input type="text" name="title" required><br>
+		<div class="form-group">
+			<label>Book Title:</label>
+			<input type="text" name="fields[bookTitle]" required>
+		</div>
 
-		<label>Book Title:</label>
-		<input type="text" name="fields[bookTitle]" required><br>
+		<div class="form-group">
+			<label>Author:</label>
+			<input type="text" name="fields[bookAuthor]" required>
+		</div>
 
-		<label>Author:</label>
-		<input type="text" name="fields[bookAuthor]" required><br>
+		<div class="form-group">
+			<label>ISBN:</label>
+			<input type="text" name="fields[isbn]" required>
+		</div>
 
-		<label>ISBN:</label>
-		<input type="text" name="fields[isbn]" required><br>
+		<div class="">
+			<label><input type="checkbox" name="fields[isBorrowed]" value="1">
+				Is Borrowed</label>
+		</div>
 
-		<label>Is Borrowed:</label>
-		<input type="checkbox" name="fields[isBorrowed]" value="1"><br>
-
-		<button type="submit">Add Book</button>
+		<button type="submit" class="btn">➕ Add Book</button>
 	</form>
 
 	<hr>
@@ -73,11 +113,49 @@
 						{% endif %}
 					</td>
 					<td>
+						<!-- Delete Form -->
 						<form method="POST" style="display:inline;">
 							{{ csrfInput() }}
-							<input type="hidden" name="action" value="entries/delete">
+							<input type="hidden" name="action" value="elements/delete">
 							<input type="hidden" name="elementId" value="{{ book.id }}">
 							<button type="submit" onclick="return confirm('Delete this book?')">🗑 Delete</button>
+						</form>
+
+						<!-- Edit Toggle Button -->
+						<button onclick="toggleEdit('{{ book.id }}')">✏️ Edit</button>
+					</td>
+				</tr>
+
+				<!-- Edit Form Row (Hidden by default) -->
+				<tr id="edit-form-{{ book.id }}" style="display:none;">
+					<td colspan="6">
+						<form method="POST" style="background:#f1f1f1; padding:10px; border:1px solid #ccc;">
+							{{ csrfInput() }}
+							<input type="hidden" name="action" value="entries/save-entry">
+							<input type="hidden" name="sectionId" value="{{ section.id }}">
+							<input type="hidden" name="entryId" value="{{ book.id }}">
+							<input type="hidden" name="entryTypeId" value="{{ book.type.id }}">
+							<input type="hidden" name="siteId" value="{{ currentSite.id }}">
+							<input type="hidden" name="enabled" value="1">
+							<input type="hidden" name="redirect" value="{{ 'librarymanager/books?success=1' | hash }}">
+
+							<label>Title:</label>
+							<input type="text" name="title" value="{{ book.title }}" required><br>
+
+							<label>Book Title:</label>
+							<input type="text" name="fields[bookTitle]" value="{{ book.bookTitle }}" required><br>
+
+							<label>Author:</label>
+							<input type="text" name="fields[bookAuthor]" value="{{ book.bookAuthor }}" required><br>
+
+							<label>ISBN:</label>
+							<input type="text" name="fields[isbn]" value="{{ book.isbn }}" required><br>
+
+							<label>Is Borrowed:</label>
+							<input type="hidden" name="fields[isBorrowed]" value="0">
+							<input type="checkbox" name="fields[isBorrowed]" value="1" {% if book.isBorrowed %} checked {% endif %}>
+
+							<button type="submit">💾 Save Changes</button>
 						</form>
 					</td>
 				</tr>
@@ -86,6 +164,13 @@
 					<td colspan="6">No books found.</td>
 				</tr>
 			{% endfor %}
+
 		</tbody>
 	</table>
+	<script>
+		function toggleEdit(id) {
+let row = document.getElementById("edit-form-" + id);
+row.style.display = row.style.display === "none" ? "table-row" : "none";
+}
+	</script>
 {% endblock %}

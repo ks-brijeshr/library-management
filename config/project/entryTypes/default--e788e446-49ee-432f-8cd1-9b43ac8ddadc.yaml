@@ -33,6 +33,18 @@ fieldLayouts:
             width: 100
           -
             elementCondition: null
+            fieldUid: affd7b2d-2531-4306-b859-67a4937cd6a6
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 97010068-7423-4f40-90ce-1996c196f237
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            elementCondition: null
             fieldUid: 27dad5a4-288e-4061-8e30-a62a47a79177 # Email
             instructions: null
             label: null
