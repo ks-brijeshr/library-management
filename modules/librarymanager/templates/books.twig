@@ -1,65 +1,91 @@
-<h2>📚 Manage Books</h2>
+{% extends "_layouts/cp" %}
+{% set title = "📚 Manage Books" %}
 
-<h3>Add New Book</h3>
-<form method="POST">
-  {{ csrfInput() }}
-  <input type="hidden" name="action" value="entries/save-entry">
-  <input type="hidden" name="section" value="books"> {# ✅ This works #}
-  <input type="hidden" name="enabled" value="1">
+{% block content %}
+	<h2>📚 Manage Books</h2>
 
-  <label>Title:</label>
-  <input type="text" name="title" required><br>
+	{% set section = craft.app.sections.getSectionByHandle('books') %}
+	{% set entryType = section.entryTypes[0] ?? null %}
 
-  <label>Author:</label>
-  <input type="text" name="fields[author]" required><br>
+	<h3>Add New Book</h3>
 
-  <label>ISBN:</label>
-  <input type="text" name="fields[isbn]" required><br>
+	{% if craft.app.request.getParam('success') %}
+		<p style="color:green;">✅ Book added successfully!</p>
+	{% endif %}
 
-  <label>Is Borrowed (initial):</label>
-  <input type="checkbox" name="fields[isBorrowed]" value="1"><br>
+	<form method="POST" accept-charset="UTF-8" enctype="multipart/form-data">
+		{{ csrfInput() }}
+		<input type="hidden" name="action" value="entries/save-entry">
+		<input type="hidden" name="sectionId" value="{{ section.id }}">
+		<input type="hidden" name="entryTypeId" value="{{ entryType.id }}">
+		<input type="hidden" name="siteId" value="{{ currentSite.id }}">
+		<input type="hidden" name="enabled" value="1">
+		<input type="hidden" name="redirect" value="{{ 'librarymanager/books?success=1' | hash }}">
 
-  <button type="submit">Add Book</button>
-</form>
 
-<hr>
+		<label>Title:</label>
+		<input type="text" name="title" required><br>
 
-<h3>📋 List of Books</h3>
+		<label>Book Title:</label>
+		<input type="text" name="fields[bookTitle]" required><br>
 
-{% set books = craft.entries.section('books').all() %}
+		<label>Author:</label>
+		<input type="text" name="fields[bookAuthor]" required><br>
 
-<table border="1" cellpadding="8">
-  <thead>
-    <tr>
-      <th>Title</th><th>Author</th><th>ISBN</th><th>Status</th><th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for book in books %}
-      <tr>
-        <td>{{ book.title }}</td>
-        {# <td>{{ book.booksTitle }}</td> #}
-        <td>{{ book.author }}</td>
-        <td>{{ book.isbn }}</td>
-        <td>
-          {% if book.isBorrowed %}
-            <span style="color:red">Borrowed</span>
-          {% else %}
-            <span style="color:green">Available</span>
-          {% endif %}
-        </td>
-        <td>
-          <!-- Delete -->
-          <form method="POST" style="display:inline;">
-            {{ csrfInput() }}
-            <input type="hidden" name="action" value="entries/delete">
-            <input type="hidden" name="elementId" value="{{ book.id }}">
-            <button type="submit" onclick="return confirm('Delete this book?')">🗑 Delete</button>
-          </form>
-        </td>
-      </tr>
-    {% else %}
-      <tr><td colspan="5">No books found.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+		<label>ISBN:</label>
+		<input type="text" name="fields[isbn]" required><br>
+
+		<label>Is Borrowed:</label>
+		<input type="checkbox" name="fields[isBorrowed]" value="1"><br>
+
+		<button type="submit">Add Book</button>
+	</form>
+
+	<hr>
+
+	<h3>📋 List of Books</h3>
+
+	{% set books = craft.entries.section('books').all() %}
+
+	<table border="1" cellpadding="8">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Book Title</th>
+				<th>Author</th>
+				<th>ISBN</th>
+				<th>Status</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for book in books %}
+				<tr>
+					<td>{{ book.title }}</td>
+					<td>{{ book.bookTitle }}</td>
+					<td>{{ book.bookAuthor }}</td>
+					<td>{{ book.isbn }}</td>
+					<td>
+						{% if book.isBorrowed %}
+							<span style="color:red;">Borrowed</span>
+						{% else %}
+							<span style="color:green;">Available</span>
+						{% endif %}
+					</td>
+					<td>
+						<form method="POST" style="display:inline;">
+							{{ csrfInput() }}
+							<input type="hidden" name="action" value="entries/delete">
+							<input type="hidden" name="elementId" value="{{ book.id }}">
+							<button type="submit" onclick="return confirm('Delete this book?')">🗑 Delete</button>
+						</form>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="6">No books found.</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

@@ -1,3 +1,8 @@
+{% extends "_layouts/cp" %}
+
+{% set title = "📤 Return Book" %}
+
+{% block content %}
 <h2>📤 Return Book</h2>
 
 {% set borrowEntries = craft.entries.section('borrowRecords').all() %}
@@ -29,3 +34,4 @@
 {% else %}
   <p>No borrowed books.</p>
 {% endif %}
+{% endblock %}

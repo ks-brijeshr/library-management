@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf1656b9bd1766b98f6be7bf0a7c0b87",
+    "content-hash": "2f1c6e4c61c4c2c6e4c94506995c5a4d",
     "packages": [
         {
             "name": "cakephp/core",
@@ -722,11 +722,11 @@
         },
         {
             "name": "craftcms/cms",
-            "version": "4.16.2",
+            "version": "4.16.3",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/craftcms/cms/zipball/e1561f1498eb145cc823d7511a62795e1a61ebf6",
-                "reference": "e1561f1498eb145cc823d7511a62795e1a61ebf6",
+                "url": "https://api.github.com/repos/craftcms/cms/zipball/964fec5696fd72e4009ca43c646cda90a60adc6c",
+                "reference": "964fec5696fd72e4009ca43c646cda90a60adc6c",
                 "shasum": ""
             },
             "require": {
@@ -811,7 +811,7 @@
                 "docs": "https://craftcms.com/docs/4.x/",
                 "rss": "https://github.com/craftcms/cms/releases.atom"
             },
-            "time": "2025-07-04T16:11:40+00:00"
+            "time": "2025-07-07T23:40:49+00:00"
         },
         {
             "name": "craftcms/feed-me",

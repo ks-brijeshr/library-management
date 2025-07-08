@@ -1,6 +1,6 @@
 {
   "require": {
-    "craftcms/cms": "^4.4.0",
+    "craftcms/cms": "4.16.3",
     "craftcms/feed-me": "^5.11",
     "craftcms/redactor": "3.1.0",
     "nystudio107/craft-seomatic": "4.1.16",
@@ -12,7 +12,8 @@
   },
   "autoload": {
     "psr-4": {
-      "modules\\": "modules/"
+      "modules\\": "modules/",
+      "modules\\librarymanager\\": "modules/librarymanager/"
     }
   },
   "config": {

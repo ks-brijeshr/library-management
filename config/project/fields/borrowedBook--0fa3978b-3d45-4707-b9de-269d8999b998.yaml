@@ -13,9 +13,9 @@ settings:
   maxRelations: 1
   minRelations: null
   selectionLabel: null
-  showSiteMenu: false
+  showSiteMenu: true
   sources:
-    - 'section:24f391ab-9599-4427-9cfd-788eb8174354'
+    - 'section:11ce773e-6e38-4fa3-98eb-4407a698a570' # Books
   targetSiteId: null
   validateRelatedElements: false
   viewMode: null
