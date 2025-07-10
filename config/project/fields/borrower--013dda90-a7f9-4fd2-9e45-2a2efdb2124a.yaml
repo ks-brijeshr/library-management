@@ -10,10 +10,10 @@ settings:
   branchLimit: null
   localizeRelations: false
   maintainHierarchy: false
-  maxRelations: 1
+  maxRelations: null
   minRelations: null
   selectionLabel: null
-  showSiteMenu: false
+  showSiteMenu: true
   sources:
     - 'section:2d09b22c-37c4-4354-aa01-6678db3c776c' # Customers
   targetSiteId: null

@@ -83,13 +83,13 @@ fieldLayouts:
         uid: c36fbd19-93b2-4b51-85c9-aa8ed447a264
         userCondition: null
 handle: default
-hasTitleField: true
+hasTitleField: false
 name: Default
 section: 11ce773e-6e38-4fa3-98eb-4407a698a570 # Books
 showStatusField: true
 slugTranslationKeyFormat: null
 slugTranslationMethod: site
 sortOrder: 1
-titleFormat: null
+titleFormat: '{bookTitle}'
 titleTranslationKeyFormat: null
 titleTranslationMethod: site

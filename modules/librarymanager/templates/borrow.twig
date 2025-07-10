@@ -26,7 +26,7 @@
 		<label>
 			<strong>Select Customer (Searchable):</strong>
 		</label><br>
-		<select name="fields[borrower]" class="select2" required>
+		<select name="fields[borrower][]" class="select2" required>
 			<option value="">-- Select Customer --</option>
 			{% for customer in craft.entries.section('customers').all() %}
 				<option value="{{ customer.id }}">
@@ -40,12 +40,12 @@
 		<label>
 			<strong>Select Book (Only Available)</strong>
 		</label><br>
-		<select name="fields[borrowedBook]" class="select-book" required>
+		<select name="fields[borrowedBook][]" class="select-book" required>
 			<option value="">-- Select Book --</option>
 			{% for book in craft.entries.section('books').all() %}
 				{% if not book.getFieldValue('isBorrowed') %}
 					<option value="{{ book.id }}">
-						{{ book.title }}
+						{{ book.getFieldValue('bookTitle') }}
 						(ISBN:
 						{{ book.getFieldValue('isbn') ?? 'N/A' }})
 					</option>
@@ -82,6 +82,5 @@ $('.select2').select2({placeholder: 'Search customer by name/email...', width: '
 $('.select-book').select2({placeholder: 'Search book by title/ISBN...', width: 'resolve'});
 });
 	</script>
-
 
 {% endblock %}

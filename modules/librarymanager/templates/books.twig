@@ -52,11 +52,13 @@
 		<input type="hidden" name="siteId" value="{{ currentSite.id }}">
 		<input type="hidden" name="enabled" value="1">
 		<input type="hidden" name="redirect" value="{{ 'librarymanager/books?success=1' | hash }}">
+		<input
+		type="hidden" name="title" value="{{ now|date('Y-m-d H:i:s') }} - {{ random() }}">
 
-		<div class="form-group">
-			<label>Title:</label>
-			<input type="text" name="title" required>
-		</div>
+		{# <div class="form-group">
+									<label>Title:</label>
+									<input type="text" name="title" required>
+								</div> #}
 
 		<div class="form-group">
 			<label>Book Title:</label>
@@ -90,7 +92,6 @@
 	<table border="1" cellpadding="8">
 		<thead>
 			<tr>
-				<th>Title</th>
 				<th>Book Title</th>
 				<th>Author</th>
 				<th>ISBN</th>
@@ -101,7 +102,6 @@
 		<tbody>
 			{% for book in books %}
 				<tr>
-					<td>{{ book.title }}</td>
 					<td>{{ book.bookTitle }}</td>
 					<td>{{ book.bookAuthor }}</td>
 					<td>{{ book.isbn }}</td>
@@ -128,7 +128,7 @@
 
 				<!-- Edit Form Row (Hidden by default) -->
 				<tr id="edit-form-{{ book.id }}" style="display:none;">
-					<td colspan="6">
+					<td colspan="5">
 						<form method="POST" style="background:#f1f1f1; padding:10px; border:1px solid #ccc;">
 							{{ csrfInput() }}
 							<input type="hidden" name="action" value="entries/save-entry">
@@ -138,9 +138,6 @@
 							<input type="hidden" name="siteId" value="{{ currentSite.id }}">
 							<input type="hidden" name="enabled" value="1">
 							<input type="hidden" name="redirect" value="{{ 'librarymanager/books?success=1' | hash }}">
-
-							<label>Title:</label>
-							<input type="text" name="title" value="{{ book.title }}" required><br>
 
 							<label>Book Title:</label>
 							<input type="text" name="fields[bookTitle]" value="{{ book.bookTitle }}" required><br>
@@ -161,7 +158,7 @@
 				</tr>
 			{% else %}
 				<tr>
-					<td colspan="6">No books found.</td>
+					<td colspan="5">No books found.</td>
 				</tr>
 			{% endfor %}
 

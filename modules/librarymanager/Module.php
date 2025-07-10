@@ -42,6 +42,7 @@ class Module extends BaseModule
                 $event->rules['librarymanager/customers'] = 'librarymanager/default/customers';
                 $event->rules['librarymanager/borrow'] = 'librarymanager/default/borrow';
                 $event->rules['librarymanager/return'] = 'librarymanager/default/return';
+                $event->rules['librarymanager/mark-returned'] = 'librarymanager/return/mark-returned';
             }
         );
 
@@ -125,14 +126,45 @@ class Module extends BaseModule
         );
 
 
+        // Event::on(Entry::class, Entry::EVENT_AFTER_SAVE, function (ModelEvent $event) {
+        //     $entry = $event->sender;
+
+        //     if ($entry->section->handle === 'borrowRecords') {
+        //         $book = $entry->getFieldValue('borrowedBook')->one();
+        //         // If borrow record is being created (no returnDate), set book as borrowed
+        //         if ($book && !$book->getFieldValue('isBorrowed') && !$entry->getFieldValue('returnDate')) {
+        //             $book->setFieldValue('isBorrowed', true);
+        //             Craft::$app->elements->saveElement($book);
+        //         }
+        //         // If borrow record is being updated with a returnDate, set book as available
+        //         if ($book && $entry->getFieldValue('returnDate')) {
+        //             if ($book->getFieldValue('isBorrowed')) {
+        //                 $book->setFieldValue('isBorrowed', false);
+        //                 Craft::$app->elements->saveElement($book);
+        //             }
+        //         }
+        //     }
+        // });
         Event::on(Entry::class, Entry::EVENT_AFTER_SAVE, function (ModelEvent $event) {
             $entry = $event->sender;
 
             if ($entry->section->handle === 'borrowRecords') {
                 $book = $entry->getFieldValue('borrowedBook')->one();
-                if ($book && !$book->getFieldValue('isBorrowed')) {
-                    $book->setFieldValue('isBorrowed', true);
-                    Craft::$app->elements->saveElement($book);
+
+                if ($book) {
+                    $returnDate = $entry->getFieldValue('returnDate');
+
+                    // If book has been returned
+                    if ($returnDate && $book->getFieldValue('isBorrowed')) {
+                        $book->setFieldValue('isBorrowed', false);
+                        Craft::$app->elements->saveElement($book);
+                    }
+
+                    // If new borrow record (no return date), and book is still marked available
+                    if (!$returnDate && !$book->getFieldValue('isBorrowed')) {
+                        $book->setFieldValue('isBorrowed', true);
+                        Craft::$app->elements->saveElement($book);
+                    }
                 }
             }
         });

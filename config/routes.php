@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Site URL Rules
  *
@@ -9,4 +10,6 @@
  * https://craftcms.com/docs/4.x/routing.html
  */
 
-return [];
+return [
+    'librarymanager/mark-returned' => 'librarymanager/return/mark-returned',
+];
