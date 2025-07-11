@@ -21,12 +21,33 @@
  * https://craftcms.com/docs/4.x/config/app.html
  */
 
+
 use craft\helpers\App;
+use yii\log\Dispatcher;
+use yii\log\FileTarget;
 
 return [
     'id' => App::env('CRAFT_APP_ID') ?: 'CraftCMS',
+
     'modules' => [
         'librarymanager' => \modules\librarymanager\Module::class,
     ],
+
     'bootstrap' => ['librarymanager'],
+
+    'components' => [
+        'log' => function () {
+            return Craft::createObject([
+                'class' => Dispatcher::class,
+                'targets' => [
+                    [
+                        'class' => FileTarget::class,
+                        'levels' => ['error', 'warning', 'info'], //ncludes info
+                        'logFile' => '@storage/logs/web.log',
+                        'logVars' => [], // Avoid clutter from _GET/_POST
+                    ],
+                ],
+            ]);
+        },
+    ],
 ];

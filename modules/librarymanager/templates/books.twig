@@ -44,6 +44,7 @@
 			background: #0056b3;
 		}
 	</style>
+
 	<form class="book-form" method="POST" accept-charset="UTF-8" enctype="multipart/form-data">
 		{{ csrfInput() }}
 		<input type="hidden" name="action" value="entries/save-entry">
@@ -52,13 +53,7 @@
 		<input type="hidden" name="siteId" value="{{ currentSite.id }}">
 		<input type="hidden" name="enabled" value="1">
 		<input type="hidden" name="redirect" value="{{ 'librarymanager/books?success=1' | hash }}">
-		<input
-		type="hidden" name="title" value="{{ now|date('Y-m-d H:i:s') }} - {{ random() }}">
-
-		{# <div class="form-group">
-									<label>Title:</label>
-									<input type="text" name="title" required>
-								</div> #}
+		<input type="hidden" name="title" value="{{ now|date('Y-m-d H:i:s') }} - {{ random() }}">
 
 		<div class="form-group">
 			<label>Book Title:</label>
@@ -87,8 +82,33 @@
 
 	<h3>📋 List of Books</h3>
 
-	{% set books = craft.entries.section('books').all() %}
+	{# Search Form (by Title or ISBN) #}
+	<form method="GET" style="margin-bottom: 20px;">
+		<input type="text" name="search" placeholder="Search by Title or ISBN" value="{{ search }}">
 
+		<button type="submit" class="btn">🔍 Search</button>
+	</form>
+
+	{# Filter by Author Dropdown #}
+	<form method="GET" onchange="this.submit()" style="margin-bottom: 20px;">
+		<select name="author">
+			<option value="">Filter by Author</option>
+			{% set rawAuthors = craft.entries.section('books').orderBy('bookAuthor').all() %}
+			{% set seenAuthors = [] %}
+			{% for entry in rawAuthors %}
+				{% set authorName = entry.bookAuthor %}
+				{% if authorName and authorName not in seenAuthors %}
+					{% set seenAuthors = seenAuthors|merge([authorName]) %}
+					<option value="{{ authorName }}" {{ authorName == author ? 'selected' }}>
+
+						{{ authorName }}
+					</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+	</form>
+
+	{#  Book Table #}
 	<table border="1" cellpadding="8">
 		<thead>
 			<tr>
@@ -161,9 +181,9 @@
 					<td colspan="5">No books found.</td>
 				</tr>
 			{% endfor %}
-
 		</tbody>
 	</table>
+
 	<script>
 		function toggleEdit(id) {
 let row = document.getElementById("edit-form-" + id);

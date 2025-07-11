@@ -38,7 +38,7 @@ class Module extends BaseModule
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
                 $event->rules['librarymanager'] = 'librarymanager/default/index';
-                $event->rules['librarymanager/books'] = 'librarymanager/default/books';
+                $event->rules['librarymanager/books'] = 'librarymanager/books/index'; // For diffrent Controller Books
                 $event->rules['librarymanager/customers'] = 'librarymanager/default/customers';
                 $event->rules['librarymanager/borrow'] = 'librarymanager/default/borrow';
                 $event->rules['librarymanager/return'] = 'librarymanager/default/return';
@@ -125,26 +125,6 @@ class Module extends BaseModule
             }
         );
 
-
-        // Event::on(Entry::class, Entry::EVENT_AFTER_SAVE, function (ModelEvent $event) {
-        //     $entry = $event->sender;
-
-        //     if ($entry->section->handle === 'borrowRecords') {
-        //         $book = $entry->getFieldValue('borrowedBook')->one();
-        //         // If borrow record is being created (no returnDate), set book as borrowed
-        //         if ($book && !$book->getFieldValue('isBorrowed') && !$entry->getFieldValue('returnDate')) {
-        //             $book->setFieldValue('isBorrowed', true);
-        //             Craft::$app->elements->saveElement($book);
-        //         }
-        //         // If borrow record is being updated with a returnDate, set book as available
-        //         if ($book && $entry->getFieldValue('returnDate')) {
-        //             if ($book->getFieldValue('isBorrowed')) {
-        //                 $book->setFieldValue('isBorrowed', false);
-        //                 Craft::$app->elements->saveElement($book);
-        //             }
-        //         }
-        //     }
-        // });
         Event::on(Entry::class, Entry::EVENT_AFTER_SAVE, function (ModelEvent $event) {
             $entry = $event->sender;
 
