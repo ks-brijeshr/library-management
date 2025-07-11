@@ -1,85 +1,144 @@
 {% extends "_layouts/cp" %}
-
 {% set title = "📤 Return Book" %}
 
 {% block content %}
-	<h2>📤 Return Book</h2>
-
-	{# Only show borrowRecords where returnDate is empty (not returned) #}
-	{% set borrowEntries = craft.entries.section('borrowRecords').returnDate('').all() %}
+	<h2 class="heading">📤 Return Book</h2>
 
 	{% if craft.app.request.getParam('success') %}
-		<p style="color:green;">✅ Book marked as returned!</p>
+		<p class="notice">✅ Book marked as returned!</p>
 	{% endif %}
 
-	{% if borrowEntries %}
-		<table border="1">
-			<tr>
-				<th>Customer</th>
-				<th>Book</th>
-				<th>Borrow Date</th>
-				<th>Return</th>
-			</tr>
-			{% for entry in borrowEntries %}
-				{% set book = entry.borrowedBook.one() %}
-				{% set borrower = entry.borrower.one() %}
+	<div class="pane">
+		<h3>🕐 Pending Returns</h3>
 
-				<tr>
-					<td>{{ borrower ? borrower.title : 'Unknown' }}</td>
-					<td>{{ book ? (book.bookTitle ?? book.title) : 'Unknown' }}</td>
-					<td>{{ entry.borrowDate|date('Y-m-d') }}</td>
-					<td>
-						{% if book and borrower %}
-							<form method="POST" action="{{ url('librarymanager/mark-returned') }}">
-								{{ csrfInput() }}
-								<input type="hidden" name="elementId" value="{{ entry.id }}">
-								<input type="hidden" name="returnDate" value="{{ now|date('Y-m-d H:i:s') }}">
-								<input type="hidden" name="redirect" value="{{ 'librarymanager/return?success=1' | hash }}">
-								<button type="submit">Mark Returned</button>
-							</form>
-						{% else %}
-							<span style="color: red;">⚠ Invalid Borrow Record</span>
+		{% if borrowEntries|length %}
+			<table class="data fullwidth">
+				<thead>
+					<tr>
+						<th>👤 Customer</th>
+						<th>📘 Book</th>
+						<th>📅 Borrow Date</th>
+						<th>✅ Return</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for entry in borrowEntries %}
+						{% set book = entry.borrowedBook.one() %}
+						{% set borrower = entry.borrower.one() %}
+
+						<tr>
+							<td>{{ borrower ? borrower.title : 'Unknown' }}</td>
+							<td>{{ book ? (book.bookTitle ?? book.title) : 'Unknown' }}</td>
+							<td>{{ entry.borrowDate|date('Y-m-d') }}</td>
+							<td>
+								{% if book and borrower %}
+									<form method="POST" action="{{ url('librarymanager/mark-returned') }}">
+										{{ csrfInput() }}
+										<input type="hidden" name="elementId" value="{{ entry.id }}">
+										<input type="hidden" name="returnDate" value="{{ now|date('Y-m-d H:i:s') }}">
+										<button type="submit" class="btn small">✅ Mark Returned</button>
+									</form>
+								{% else %}
+									<span style="color: red;">⚠ Invalid Borrow Record</span>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			{% if totalPages > 1 %}
+				<div class="pagination">
+					<ul class="flex" style="gap: 6px;">
+						{% if currentPage > 1 %}
+							<li>
+								<a class="btn" href="?page={{ currentPage - 1 }}&historyPage={{ currentHistoryPage }}">« Prev</a>
+							</li>
 						{% endif %}
-					</td>
-				</tr>
+						{% for i in 1..totalPages %}
+							<li>
+								{% if i == currentPage %}
+									<span class="btn submit disabled">{{ i }}</span>
+								{% else %}
+									<a class="btn" href="?page={{ i }}&historyPage={{ currentHistoryPage }}">{{ i }}</a>
+								{% endif %}
+							</li>
+						{% endfor %}
+						{% if currentPage < totalPages %}
+							<li>
+								<a class="btn" href="?page={{ currentPage + 1 }}&historyPage={{ currentHistoryPage }}">Next »</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			{% endif %}
+		{% else %}
+			<p>No pending returns.</p>
+		{% endif %}
+	</div>
 
-			{% endfor %}
-		</table>
-	{% else %}
-		<p>No borrowed books.</p>
-	{% endif %}
+	<br>
 
-	<hr>
+	<div class="pane">
+		<h3>📋 Borrow History</h3>
 
-	{# Optional: Show all borrow history #}
-	<h3>📋 Borrow History</h3>
-	{% set allBorrowRecords = craft.entries.section('borrowRecords').orderBy('dateCreated desc').all() %}
-	<table border="1">
-		<tr>
-			<th>Customer</th>
-			<th>Book</th>
-			<th>Borrow Date</th>
-			<th>Return Date</th>
-		</tr>
-		{% for entry in allBorrowRecords %}
-			{% set borrower = entry.borrower.one() %}
-			{% set book = entry.borrowedBook.one() %}
-			<tr>
-				<td>{{ borrower ? borrower.title : 'Unknown' }}</td>
-				<td>{{ book ? (book.bookTitle ?? book.title) : 'Unknown' }}</td>
-				<td>{{ entry.borrowDate|date('Y-m-d') }}</td>
-				<td>
-					{% if entry.returnDate %}
-						{{ entry.returnDate|date('Y-m-d') }}
-					{% else %}
-						<span style="color:red;">Not Returned</span>
-					{% endif %}
-				</td>
-			</tr>
-			{# <pre style="color: red; background: #fffbe6; border: 1px solid #f5c542; padding: 8px;">
-																					    Fields for this entry:
-																					    {{ dump(entry.getFieldValues()) }}
-																					    </pre> #}
-		{% endfor %}
-	</table>
+		{% if borrowHistory|length %}
+			<table class="data fullwidth">
+				<thead>
+					<tr>
+						<th>👤 Customer</th>
+						<th>📘 Book</th>
+						<th>📅 Borrow Date</th>
+						<th>📅 Return Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for entry in borrowHistory %}
+						{% set borrower = entry.borrower.one() %}
+						{% set book = entry.borrowedBook.one() %}
+						<tr>
+							<td>{{ borrower ? borrower.title : 'Unknown' }}</td>
+							<td>{{ book ? (book.bookTitle ?? book.title) : 'Unknown' }}</td>
+							<td>{{ entry.borrowDate|date('Y-m-d') }}</td>
+							<td>
+								{% if entry.returnDate %}
+									{{ entry.returnDate|date('Y-m-d') }}
+								{% else %}
+									<span class="error">Not Returned</span>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			{% if historyPages > 1 %}
+				<div class="pagination">
+					<ul class="flex" style="gap: 6px;">
+						{% if currentHistoryPage > 1 %}
+							<li>
+								<a class="btn" href="?historyPage={{ currentHistoryPage - 1 }}&page={{ currentPage }}">« Prev</a>
+							</li>
+						{% endif %}
+						{% for i in 1..historyPages %}
+							<li>
+								{% if i == currentHistoryPage %}
+									<span class="btn submit disabled">{{ i }}</span>
+								{% else %}
+									<a class="btn" href="?historyPage={{ i }}&page={{ currentPage }}">{{ i }}</a>
+								{% endif %}
+							</li>
+						{% endfor %}
+						{% if currentHistoryPage < historyPages %}
+							<li>
+								<a class="btn" href="?historyPage={{ currentHistoryPage + 1 }}&page={{ currentPage }}">Next »</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			{% endif %}
+		{% else %}
+			<p>No history records.</p>
+		{% endif %}
+	</div>
 {% endblock %}

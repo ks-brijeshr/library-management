@@ -2,149 +2,156 @@
 {% set title = "👥 Manage Customers" %}
 
 {% block content %}
-	<h2>👥 Manage Customers</h2>
+
+	<h2 class="heading">👥 Manage Customers</h2>
+
+	{% if successMessage %}
+		<div class="notice">{{ successMessage }}</div>
+	{% endif %}
+	{% if errorMessage %}
+		<div class="error">{{ errorMessage }}</div>
+	{% endif %}
 
 	{% set section = craft.app.sections.getSectionByHandle('customers') %}
 	{% set entryType = section.entryTypes[0] ?? null %}
 
-	<h3>Add New Customer</h3>
+	<div class="pane">
+		<h3>Add New Customer</h3>
+		<form method="POST" class="fields">
+			{{ csrfInput() }}
+			<input type="hidden" name="action" value="entries/save-entry">
+			<input type="hidden" name="sectionId" value="{{ section.id }}">
+			<input type="hidden" name="entryTypeId" value="{{ entryType.id }}">
+			<input type="hidden" name="siteId" value="{{ currentSite.id }}">
+			<input type="hidden" name="enabled" value="1">
+			<input type="hidden" name="redirect" value="{{ 'librarymanager/customers?success=1' | hash }}">
 
-	<style>
-		form.customer-form {
-			max-width: 500px;
-			background: #f8f9fa;
-			padding: 20px;
-			border-radius: 8px;
-			border: 1px solid #dee2e6;
-			margin-bottom: 30px;
-		}
-		.form-group {
-			margin-bottom: 15px;
-		}
-		.form-group label {
-			display: block;
-			font-weight: bold;
-			margin-bottom: 5px;
-		}
-		.form-group input[type="text"],
-		.form-group input[type="email"] {
-			width: 100%;
-			padding: 8px;
-			box-sizing: border-box;
-		}
-		.btn {
-			background: #28a745;
-			color: white;
-			border: none;
-			padding: 10px 15px;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-		.btn:hover {
-			background: #1e7e34;
-		}
-	</style>
+			<div class="field">
+				<div class="heading">
+					<label for="title">Full Name (Title)</label>
+				</div>
+				<div class="input"><input type="text" id="title" name="title" class="text fullwidth" required></div>
+			</div>
 
-	<form class="customer-form" method="POST" accept-charset="UTF-8" enctype="multipart/form-data">
-		{{ csrfInput() }}
-		<input type="hidden" name="action" value="entries/save-entry">
-		<input type="hidden" name="sectionId" value="{{ section.id }}">
-		<input type="hidden" name="entryTypeId" value="{{ entryType.id }}">
-		<input type="hidden" name="siteId" value="{{ currentSite.id }}">
-		<input type="hidden" name="enabled" value="1">
-		<input type="hidden" name="redirect" value="{{ 'librarymanager/customers?success=1' | hash }}">
+			<div class="field">
+				<div class="heading">
+					<label for="email">Email</label>
+				</div>
+				<div class="input"><input type="email" id="email" name="fields[email]" class="text fullwidth" required></div>
+			</div>
 
-		<div class="form-group">
-			<label>Full Name (Title):</label>
-			<input type="text" name="title" required>
-		</div>
+			<div class="field">
+				<div class="heading">
+					<label for="phone">Phone</label>
+				</div>
+				<div class="input"><input type="text" id="phone" name="fields[phone]" class="text fullwidth" required></div>
+			</div>
 
-		<div class="form-group">
-			<label>Email:</label>
-			<input type="email" name="fields[email]" required>
-		</div>
+			<button type="submit" class="btn submit">➕ Add Customer</button>
+		</form>
+	</div>
 
-		<div class="form-group">
-			<label>Phone:</label>
-			<input type="text" name="fields[phone]" required>
-		</div>
+	<br>
 
-		<button type="submit" class="btn">➕ Add Customer</button>
-	</form>
+	<div class="pane">
+		<h3>📋 Customer List</h3>
 
-	<hr>
-
-	<h3>📋 List of Customers</h3>
-
-	{% set customers = craft.entries.section('customers').all() %}
-
-	<table border="1" cellpadding="8">
-		<thead>
-			<tr>
-				<th>Full Name</th>
-				<th>Email</th>
-				<th>Phone</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for customer in customers %}
+		<table class="data fullwidth">
+			<thead>
 				<tr>
-					<td>{{ customer.title }}</td>
-					<td>{{ customer.getFieldValue('email') }}</td>
-					<td>{{ customer.getFieldValue('phone') }}</td>
-					<td>
-						<!-- Delete Form -->
-						<form method="POST" style="display:inline;">
-							{{ csrfInput() }}
-							<input type="hidden" name="action" value="elements/delete">
-							<input type="hidden" name="elementId" value="{{ customer.id }}">
-							<button type="submit" onclick="return confirm('Delete this customer?')">🗑 Delete</button>
-						</form>
-
-						<!-- Edit Toggle -->
-						<button onclick="toggleEdit('{{ customer.id }}')">✏️ Edit</button>
-					</td>
+					<th>👤 Full Name</th>
+					<th>📧 Email</th>
+					<th>📞 Phone</th>
+					<th>⚙️ Actions</th>
 				</tr>
+			</thead>
+			<tbody>
+				{% for customer in customers %}
+					<tr>
+						<td>{{ customer.title }}</td>
+						<td>{{ customer.getFieldValue('email') }}</td>
+						<td>{{ customer.getFieldValue('phone') }}</td>
+						<td>
+							<form method="POST" style="display:inline;">
+								{{ csrfInput() }}
+								<input type="hidden" name="action" value="elements/delete">
+								<input type="hidden" name="elementId" value="{{ customer.id }}">
+								<button type="submit" class="btn small" onclick="return confirm('Delete this customer?')">🗑</button>
+							</form>
+							<button class="btn small" onclick="toggleEdit('{{ customer.id }}')">✏️</button>
+						</td>
+					</tr>
+					<tr id="edit-form-{{ customer.id }}" style="display:none;">
+						<td colspan="4">
+							<form method="POST" class="fields">
+								{{ csrfInput() }}
+								<input type="hidden" name="action" value="entries/save-entry">
+								<input type="hidden" name="entryId" value="{{ customer.id }}">
+								<input type="hidden" name="sectionId" value="{{ section.id }}">
+								<input type="hidden" name="entryTypeId" value="{{ customer.type.id }}">
+								<input type="hidden" name="siteId" value="{{ currentSite.id }}">
+								<input type="hidden" name="enabled" value="1">
+								<input type="hidden" name="redirect" value="{{ 'librarymanager/customers?success=1' | hash }}">
 
-				<!-- Edit Form Row -->
-				<tr id="edit-form-{{ customer.id }}" style="display:none;">
-					<td colspan="4">
-						<form method="POST" style="background:#f1f1f1; padding:10px; border:1px solid #ccc;">
-							{{ csrfInput() }}
-							<input type="hidden" name="action" value="entries/save-entry">
-							<input type="hidden" name="sectionId" value="{{ section.id }}">
-							<input type="hidden" name="entryId" value="{{ customer.id }}">
-							<input type="hidden" name="entryTypeId" value="{{ customer.type.id }}">
-							<input type="hidden" name="siteId" value="{{ currentSite.id }}">
-							<input type="hidden" name="enabled" value="1">
-							<input type="hidden" name="redirect" value="{{ 'librarymanager/customers?success=1' | hash }}">
+								<div class="field">
+									<label>Full Name (Title):</label>
+									<input type="text" name="title" value="{{ customer.title }}" class="text fullwidth" required>
+								</div>
 
-							<label>Full Name (Title):</label>
-							<input type="text" name="title" value="{{ customer.title }}" required><br>
+								<div class="field">
+									<label>Email:</label>
+									<input type="email" name="fields[email]" value="{{ customer.getFieldValue('email') }}" class="text fullwidth" required>
+								</div>
 
-							<label>Email:</label>
-							<input type="email" name="fields[email]" value="{{ customer.getFieldValue('email') }}" required><br>
+								<div class="field">
+									<label>Phone:</label>
+									<input type="text" name="fields[phone]" value="{{ customer.getFieldValue('phone') }}" class="text fullwidth" required>
+								</div>
 
-							<label>Phone:</label>
-							<input type="text" name="fields[phone]" value="{{ customer.getFieldValue('phone') }}" required><br>
+								<button type="submit" class="btn submit">💾 Save</button>
+							</form>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="4">No customers found.</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 
-							<button type="submit">💾 Save Changes</button>
-						</form>
-					</td>
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="4">No customers found.</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+		{% if totalPages > 1 %}
+			<div class="pagination">
+				<ul class="flex" style="gap: 6px;">
+					{% if currentPage > 1 %}
+						<li>
+							<a class="btn" href="?page={{ currentPage - 1 }}">« Prev</a>
+						</li>
+					{% endif %}
+					{% for i in 1..totalPages %}
+						<li>
+							{% if i == currentPage %}
+								<span class="btn submit disabled">{{ i }}</span>
+							{% else %}
+								<a class="btn" href="?page={{ i }}">{{ i }}</a>
+							{% endif %}
+						</li>
+					{% endfor %}
+					{% if currentPage < totalPages %}
+						<li>
+							<a class="btn" href="?page={{ currentPage + 1 }}">Next »</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		{% endif %}
+	</div>
 
 	<script>
 		function toggleEdit(id) {
-let row = document.getElementById("edit-form-" + id);
+const row = document.getElementById("edit-form-" + id);
 row.style.display = row.style.display === "none" ? "table-row" : "none";
 }
 	</script>
+
 {% endblock %}

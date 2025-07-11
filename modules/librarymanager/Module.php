@@ -39,9 +39,12 @@ class Module extends BaseModule
             function (RegisterUrlRulesEvent $event) {
                 $event->rules['librarymanager'] = 'librarymanager/default/index';
                 $event->rules['librarymanager/books'] = 'librarymanager/books/index'; // For diffrent Controller Books
-                $event->rules['librarymanager/customers'] = 'librarymanager/default/customers';
+                // $event->rules['librarymanager/customers'] = 'librarymanager/default/customers';
+                $event->rules['librarymanager/customers'] = 'librarymanager/customers/index'; // For diffrent Controller Customers
                 $event->rules['librarymanager/borrow'] = 'librarymanager/default/borrow';
-                $event->rules['librarymanager/return'] = 'librarymanager/default/return';
+                // $event->rules['librarymanager/return'] = 'librarymanager/default/return';
+                $event->rules['librarymanager/return'] = 'librarymanager/return/index';
+
                 $event->rules['librarymanager/mark-returned'] = 'librarymanager/return/mark-returned';
             }
         );

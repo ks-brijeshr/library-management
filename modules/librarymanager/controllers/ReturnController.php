@@ -11,6 +11,48 @@ class ReturnController extends Controller
 {
     protected array|int|bool $allowAnonymous = false;
 
+    public function actionIndex(): Response
+    {
+        $request = Craft::$app->getRequest();
+        $currentPage = (int)$request->getParam('page', 1);
+        $historyPage = (int)$request->getParam('historyPage', 1);
+
+        $perPage = 4;
+
+        // Pending Returns
+        $pendingQuery = Entry::find()
+            ->section('borrowRecords')
+            ->returnDate(':empty:')
+            ->orderBy('dateCreated DESC');
+
+        $totalPending = $pendingQuery->count();
+        $pendingEntries = $pendingQuery
+            ->limit($perPage)
+            ->offset(($currentPage - 1) * $perPage)
+            ->all();
+
+        // Borrow History
+        $historyQuery = Entry::find()
+            ->section('borrowRecords')
+            ->orderBy('dateCreated DESC');
+
+        $totalHistory = $historyQuery->count();
+        $historyEntries = $historyQuery
+            ->limit($perPage)
+            ->offset(($historyPage - 1) * $perPage)
+            ->all();
+
+        return $this->renderTemplate('librarymanager/return', [
+            'borrowEntries' => $pendingEntries,
+            'totalPages' => ceil($totalPending / $perPage),
+            'currentPage' => $currentPage,
+
+            'borrowHistory' => $historyEntries,
+            'historyPages' => ceil($totalHistory / $perPage),
+            'currentHistoryPage' => $historyPage,
+        ]);
+    }
+
     public function actionMarkReturned(): Response
     {
         $this->requirePostRequest();
@@ -33,13 +75,13 @@ class ReturnController extends Controller
         // Set the return date
         $entry->setFieldValue('returnDate', $returnDate);
 
-        // Save the entry (update only)
         if (Craft::$app->elements->saveElement($entry)) {
             Craft::$app->getSession()->setNotice('Book marked as returned!');
         } else {
             Craft::$app->getSession()->setError('Could not update entry.');
         }
 
-        return $this->redirectToPostedUrl();
+        // Redirect to return list first page
+        return $this->redirect('librarymanager/return?success=1');
     }
 }
